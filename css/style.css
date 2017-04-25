@@ -10,16 +10,18 @@ body {background-color: #CCC;}
 }
 #items {
      height: 18em;
-     overflow: auto
+     overflow: auto;
 }
 #weather {
-    height: 12em;
+    height: 17em;
+	overflow: auto;
 }
 #map {
     height: 26em;
 }
 #news {
-    height: 10em;
+    height: 17em;
+    overflow: auto;
 }
 #entertainment {
     height: 10em;
