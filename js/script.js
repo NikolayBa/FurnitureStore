@@ -25,7 +25,35 @@ $( document ).ready(function() {
                             "  </br>  Purchased on : " + value.date + " </br> ");  
     });       
 
-                             
+     prepareData();                      
 });
+var url="http://api.openweathermap.org/data/2.5/forecast";
+var apiId="a73fba391f014de23586c2a9ae96f692";
+var cityName="London";
 
+var prepareData = function() {
+			getWeatherData(url, cityName,apiId);
+		}
+		
+function getWeatherData(url,cityName,apiId){
+	var request=$.ajax({
+		url:url,
+		dataType:"jsonp",
+		data:{q:cityName,appid:apiId},
+		jsonpCallback:"fetchWeatherData",
+		type:"GET"
+	}).fail(function(error){
+		console.error(error);
+		alert("Error sending request")})
+}
 
+function fetchWeatherData(forecast){
+	console.log(forecast);
+	var html="";
+	cityName="London";//take it from location
+	html+="<h3> Weather Forecast for "+cityName+ " </h3>";
+	forecast.list.forEach(function(forecastEntry,index,list){
+		html+="<p>" + forecastEntry.dt_txt + " : " + forecastEntry.main.temp + "</p>"
+	})
+	$("#weather").html(html); 
+}
