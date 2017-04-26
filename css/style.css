@@ -1,6 +1,6 @@
 * {box-sizing:border-box;}
 body {
-	background-color: #CCC;
+	background-color: #FFFFFF;
 	font-family:Arial;
 	font-size:11pt;
 }
@@ -10,35 +10,44 @@ body {
     margin-top: 1px;
 }
 #customerinfo {
-    height: 6em;
+    height: 9em;
+	background-color: #FFFA68;
+	border-color: #FFFA68;
 }
 #items {
      height: 18em;
      overflow: auto;
+	 background-color: #FFD0B3;
+	 border-color: #FFD0B3;
 }
 #weather {
     height: 19em;
 	overflow: auto;
+	background-color:#96F396;
+	border-color:#96F396;
 }
 #map {
     height: 26em;
+	border-style:hidden;
 }
 #news {
-    height: 17em;
+    height: 19em;
     overflow: auto;
+	background-color:#A7E1EC;
+	border-color:#A7E1EC;
 }
 #entertainment {
-    height: 10em;
+    height: 19em;
+	overflow:auto;
+	background-color:#ebedcb;
+	border-color:#ebedcb;
 }
 .col-md-4{
-    padding-left: 5px;
+    padding-left: 0px;
     padding-right: 5px;
 }
 .col-md-8{
-    padding-left: 5px;
+    padding-left: 0px;
     padding-right: 5px;
 }
 
-h4{
-	font-family:Georgia;
-}
