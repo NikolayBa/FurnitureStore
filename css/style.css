@@ -28,7 +28,8 @@ body {
     overflow: auto;
 }
 #entertainment {
-    height: 10em;
+    height: 17em;
+    overflow: auto
 }
 .col-md-4{
     padding-left: 5px;

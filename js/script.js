@@ -52,7 +52,7 @@ $( document ).ready(function() {
     getNyTimesNewsData();
 
     //MAP
-    setupMap();
+    //setupMap();
     
     //WEATHER 
     var weatherUrl="http://api.openweathermap.org/data/2.5/forecast";
@@ -62,6 +62,7 @@ $( document ).ready(function() {
 
     //Entertainment
     entertainmentData();
+
 });
 
 function getNyTimesNewsData(){
@@ -163,13 +164,20 @@ function entertainmentData(){
         dataType: 'jsonp',
         success: function(result) {
             if (result.status == 200){
-                console.log('Found ' + JSON.stringify(result) + ' result(s)');
-
-                var items = [];
+                var items = [];             
                 $.each( result.places, function( key, val ) {
-                    items.push("<p>" + val.name + "</p>" );
+                        //Trim some results, to remove duplicate results
+                    if( val.name.toLowerCase().trim() != cityStr.toLowerCase()){
+                      items.push("<div> - " + val.name + "<div>" );
+                      console.log(cityStr + " " + val.name);
+                    }
                 });
+
+                var uniqeItems = jQuery.unique(items);
+                var title ="<h4> Places to visit in "+ cityStr + " </h4>";
+
                 $('#entertainment').empty();
+                $('#entertainment').append(title);
                 $('#entertainment').append(items);
             }
             else
