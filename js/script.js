@@ -1,5 +1,5 @@
 var people = [  {name:"John Doe1", address: "Miami 87" , phonenumber: 088861235, city: "Stockholm" , lat: 59.326, lng: 18.070 },
-                {name:"John Doe2", address: "Miami 87" , phonenumber: 08886123, city: "Gothenburg",  lat: 20, lng: 10 },
+                {name:"John Doe2", address: "Miami 87" , phonenumber: 08886123, city: "Gothenburg",  lat: 57.702, lng: 11.964 },
                 {name:"John Doe3", address: "Miami 87" , phonenumber: 08886123, city: "Uppsala",  lat: 20, lng: 10 },
                 {name:"John Doe4", address: "Miami 87" , phonenumber: 08886123, city: "Lund",  lat: 20, lng: 10 },
                 {name:"John Doe5", address: "Miami 87" , phonenumber: 08886123, city: "Halmstad",  lat: 20, lng: 10 }];
@@ -44,16 +44,16 @@ $( document ).ready(function() {
     //ITEMS
     $("#items").empty();
     $.each( purchase, function( index, value ) {
-         $("#items").append("item name : " + value.name + 
+         $("#items").append("Item : " + value.name + 
                             " </br> Description: " + value.description + 
-                            " </br>  Purchased on : " + value.date + " </br> ");  
+                            " </br> Purchased on : " + value.date + " </br> ");  
     });       
 
     //NEWS
     getNyTimesNewsData();
 
     //MAP
-    //setupMap();
+    setupMap();
     
     //WEATHER 
     var weatherUrl="http://api.openweathermap.org/data/2.5/forecast";
@@ -61,6 +61,8 @@ $( document ).ready(function() {
 
     getWeatherData(weatherUrl, cityStr,weatherApiKey);
 
+    //Entertainment
+    entertainmentData();
 });
 
 function getNyTimesNewsData(){
@@ -106,7 +108,7 @@ function setupMap(){
 
     var map = new google.maps.Map(document.getElementById('map'), {
       zoom: 7,
-      center: new google.maps.LatLng(people[0].lat, people[0].lng),
+      center: new google.maps.LatLng(people[randomId].lat, people[randomId].lng),
       mapTypeId: google.maps.MapTypeId.ROADMAP
     });
 
@@ -143,7 +145,7 @@ function getWeatherData(url,cityStr,weatherApiKey){
 
 function fetchWeatherData(forecast){
     $("#weather").empty();
-	console.log(JSON.stringify(forecast));
+	//console.log(JSON.stringify(forecast));
 	var title ="<h4> Weather Forecast for "+ cityStr + " </h4>";
     $("#weather").append(title);
 	forecast.list.forEach(function(forecastEntry,index,list){
@@ -153,4 +155,28 @@ function fetchWeatherData(forecast){
         $("#weather").append(text);  
         $("#weather").append(icon);   
 	})
+}
+
+function entertainmentData(){
+    var url = 'http://api.places.visitsweden.com/places/?name=' + cityStr + '&appKey=60C7E27A-1C21-4468-A151-C7BD3793BB08';
+    $.ajax({
+        url: url,
+        dataType: 'jsonp',
+        success: function(result) {
+            if (result.status == 200){
+                console.log('Found ' + JSON.stringify(result) + ' result(s)');
+
+                var items = [];
+                $.each( result.places, function( key, val ) {
+                    items.push("<p>" + val.name + "</p>" );
+                });
+                $('#entertainment').empty();
+                $('#entertainment').append(items);
+            }
+            else
+                alert('Error: ' + result.errormessage);
+    
+        },
+        error: function() { /*JSONP doesn't support error events*/ }
+    });
 }
