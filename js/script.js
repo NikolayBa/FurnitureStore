@@ -54,7 +54,7 @@ $( document ).ready(function() {
     getNyTimesNewsData();
 
     //MAP
-    //setupMap();
+    setupMap();
     
     //WEATHER 
     var weatherUrl="http://api.openweathermap.org/data/2.5/forecast";
