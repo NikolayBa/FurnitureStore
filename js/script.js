@@ -1,8 +1,8 @@
 var people = [  {name:"John Doe1", address: "Miami 87" , phonenumber: 088861235, city: "Stockholm" , lat: 59.326, lng: 18.070 },
-                {name:"John Doe2", address: "Miami 87" , phonenumber: 08886123, city: "Gothenburg",  lat: 20, lng: 10 },
-                {name:"John Doe3", address: "Miami 87" , phonenumber: 08886123, city: "Uppsala",  lat: 20, lng: 10 },
-                {name:"John Doe4", address: "Miami 87" , phonenumber: 08886123, city: "Lund",  lat: 20, lng: 10 },
-                {name:"John Doe5", address: "Miami 87" , phonenumber: 08886123, city: "Halmstad",  lat: 20, lng: 10 }];
+                {name:"John Doe2", address: "Miami 87" , phonenumber: 08886123, city: "Gothenburg",  lat: 57.706268, lng: 11.973600 },
+                {name:"John Doe3", address: "Miami 87" , phonenumber: 08886123, city: "Uppsala",  lat: 59.856913, lng: 17.639531 },
+                {name:"John Doe4", address: "Miami 87" , phonenumber: 08886123, city: "Lund",  lat: 55.702139, lng: 13.189411 },
+                {name:"John Doe5", address: "Miami 87" , phonenumber: 08886123, city: "Halmstad",  lat: 56.672453, lng: 12.858248 }];
 
 var randomId = Math.floor(Math.random() * 5);
 var cityStr  = people[randomId].city;
@@ -53,7 +53,7 @@ $( document ).ready(function() {
     getNyTimesNewsData();
 
     //MAP
-    //setupMap();
+    setupMap();
     
     //WEATHER 
     var weatherUrl="http://api.openweathermap.org/data/2.5/forecast";
@@ -97,16 +97,16 @@ function getNyTimesNewsData(){
 
 function setupMap(){
     var locations = [
-      ['Blagoevgrad 21.03.2017 - 24.03.2017', 42.016380, 23.109741, 4],
-      ['Sofia 26.03.2017 ', 42.686339, 23.321228, 5],
-      ['Varna 28.03.2017', 43.209046, 27.913513, 3],
-      ['Ruse 30.03.2017', 43.842319, 25.968933, 2],
-      ['Plovediv 01.04.2017', 42.138697, 24.746704, 1]
+      ['IKEA Fastigheter AB', 56.069034, 12.763518, 4],
+      ['IKEA Fyndvaruhus ', 56.540647, 14.176277, 5],
+      ['IKEA Kungens Kurva', 59.262196, 17.997597, 3],
+      ['IKEA Sverige', 59.833615, 17.693893, 2],
+      ['IKEA Barkarby', 59.402960, 17.859629, 1]
     ];
 
     var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 7,
-      center: new google.maps.LatLng(people[0].lat, people[0].lng),
+      zoom: 8,
+      center: new google.maps.LatLng(people[randomId].lat, people[randomId].lng),
       mapTypeId: google.maps.MapTypeId.ROADMAP
     });
 
@@ -133,7 +133,7 @@ function getWeatherData(url,cityStr,weatherApiKey){
 	var request=$.ajax({
 		url:url,
 		dataType:"jsonp",
-		data:{q:cityStr,appid:weatherApiKey},
+		data:{q:cityStr,appid:weatherApiKey,units:"metric"},
 		jsonpCallback:"fetchWeatherData",
 		type:"GET"
 	}).fail(function(error){
@@ -147,7 +147,7 @@ function fetchWeatherData(forecast){
 	var title ="<h4> Weather Forecast for "+ cityStr + " </h4>";
     $("#weather").append(title);
 	forecast.list.forEach(function(forecastEntry,index,list){
-		var text = "<p>" + forecastEntry.dt_txt + " : " + forecastEntry.main.temp + "</p>";
+		var text = "<p>" + forecastEntry.dt_txt + " : " + parseInt(forecastEntry.main.temp) + " &#176C</p>";
         var icon = $("<i></i>");
         icon.addClass("wi weathericon " + iconTable[forecastEntry.weather[0].icon]);
         $("#weather").append(text);  
