@@ -11,30 +11,30 @@ body {
 }
 #customerinfo {
     height: 9em;
-	background-color: #FFFA68;
-	border-color: #FFFA68;
+	background-color: #ebedcb;
+	border-color: #ebedcb;
 }
 #items {
      height: 18em;
      overflow: auto;
-	 background-color: #FFD0B3;
-	 border-color: #FFD0B3;
+	 background-color: #ebedcb;
+	 border-color: #ebedcb;
 }
 #weather {
     height: 19em;
 	overflow: auto;
-	background-color:#96F396;
-	border-color:#96F396;
+	background-color:#ebedcb;
+	border-color:#ebedcb;
 }
 #map {
-    height: 26em;
+    height: 28em;
 	border-style:hidden;
 }
 #news {
     height: 19em;
     overflow: auto;
-	background-color:#A7E1EC;
-	border-color:#A7E1EC;
+	background-color:#ebedcb;
+	border-color:#ebedcb;
 }
 #entertainment {
     height: 19em;
