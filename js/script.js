@@ -3,7 +3,6 @@ var people = [  {name:"John Doe1", address: "Miami 87" , phonenumber: 088861235,
                 {name:"John Doe3", address: "Miami 87" , phonenumber: 08886123, city: "Uppsala",  lat: 59.856913, lng: 17.639531 },
                 {name:"John Doe4", address: "Miami 87" , phonenumber: 08886123, city: "Lund",  lat: 55.702139, lng: 13.189411 },
                 {name:"John Doe5", address: "Miami 87" , phonenumber: 08886123, city: "Halmstad",  lat: 56.672453, lng: 12.858248 }];
-
 var randomId = Math.floor(Math.random() * 5);
 var cityStr  = people[randomId].city;
 
@@ -44,9 +43,9 @@ $( document ).ready(function() {
     //ITEMS
     $("#items").empty();
     $.each( purchase, function( index, value ) {
-         $("#items").append("item name : " + value.name + 
+         $("#items").append("Item : " + value.name + 
                             " </br> Description: " + value.description + 
-                            " </br>  Purchased on : " + value.date + " </br> ");  
+                            " </br> Purchased on : " + value.date + " </br> ");  
     });       
 
     //NEWS
@@ -61,6 +60,8 @@ $( document ).ready(function() {
 
     getWeatherData(weatherUrl, cityStr,weatherApiKey);
 
+    //Entertainment
+    entertainmentData();
 });
 
 function getNyTimesNewsData(){
@@ -143,7 +144,7 @@ function getWeatherData(url,cityStr,weatherApiKey){
 
 function fetchWeatherData(forecast){
     $("#weather").empty();
-	console.log(JSON.stringify(forecast));
+	//console.log(JSON.stringify(forecast));
 	var title ="<h4> Weather Forecast for "+ cityStr + " </h4>";
     $("#weather").append(title);
 	forecast.list.forEach(function(forecastEntry,index,list){
@@ -153,4 +154,28 @@ function fetchWeatherData(forecast){
         $("#weather").append(text);  
         $("#weather").append(icon);   
 	})
+}
+
+function entertainmentData(){
+    var url = 'http://api.places.visitsweden.com/places/?name=' + cityStr + '&appKey=60C7E27A-1C21-4468-A151-C7BD3793BB08';
+    $.ajax({
+        url: url,
+        dataType: 'jsonp',
+        success: function(result) {
+            if (result.status == 200){
+                console.log('Found ' + JSON.stringify(result) + ' result(s)');
+
+                var items = [];
+                $.each( result.places, function( key, val ) {
+                    items.push("<p>" + val.name + "</p>" );
+                });
+                $('#entertainment').empty();
+                $('#entertainment').append(items);
+            }
+            else
+                alert('Error: ' + result.errormessage);
+    
+        },
+        error: function() { /*JSONP doesn't support error events*/ }
+    });
 }
