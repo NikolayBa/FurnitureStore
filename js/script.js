@@ -1,8 +1,8 @@
-var people = [  {name:"John Doe1", address: "Miami 87" , phonenumber: 088861235, city: "Stockholm" , lat: 59.326, lng: 18.070 },
-                {name:"John Doe2", address: "Miami 87" , phonenumber: 08886123, city: "Gothenburg",  lat: 57.706268, lng: 11.973600 },
-                {name:"John Doe3", address: "Miami 87" , phonenumber: 08886123, city: "Uppsala",  lat: 59.856913, lng: 17.639531 },
-                {name:"John Doe4", address: "Miami 87" , phonenumber: 08886123, city: "Lund",  lat: 55.702139, lng: 13.189411 },
-                {name:"John Doe5", address: "Miami 87" , phonenumber: 08886123, city: "Halmstad",  lat: 56.672453, lng: 12.858248 }];
+var people = [  {name:"Sadio Mane", address: "Hovstagrand 123" , phonenumber: "+46 123 234", city: "Stockholm" , lat: 59.326, lng: 18.070 },
+                {name:"Roberto Firmino", address: "Grytvagen 87" , phonenumber: "+46 838 882", city: "Gothenburg",  lat: 57.706268, lng: 11.973600 },
+                {name:"Divock Origi", address: "Ripsavagen 2" , phonenumber: "+46 223 112", city: "Uppsala",  lat: 59.856913, lng: 17.639531 },
+                {name:"Dejan Lovren", address: "Orbyleden 17" , phonenumber: "+46 772 123", city: "Lund",  lat: 55.702139, lng: 13.189411 },
+                {name:"Alberto Moreno", address: "Sorundagatan 11" , phonenumber: "+46 234 122", city: "Halmstad",  lat: 56.672453, lng: 12.858248 }];
 var randomId = Math.floor(Math.random() * 5);
 var cityStr  = people[randomId].city;
 
@@ -28,24 +28,26 @@ iconTable = {
 };
 
 var purchase = [ {name:"Sofa", description: "Warm and Soft Sofa" , date: "03/23/2015" },
-                 {name:"Wardrobe", description: "Warm and Soft Sofa" , date: "03/23/2015" },
-                 {name:"Lamp", description: "Warm and Soft Sofa" , date: "03/23/2015" },
-                 {name:"Desk", description: "Warm and Soft Sofa" , date: "03/23/2015" },
-                 {name:"Chair", description: "Warm and Soft Sofa" , date: "03/23/2015" }];
+                 {name:"Wardrobe", description: "Wardrobe with Sliding Door System" , date: "04/11/2016" },
+                 {name:"Lamp", description: "Arc Floor Lamp" , date: "10/12/2014" },
+                 {name:"Desk", description: "Corner Study Desk" , date: "28/11/2016" },
+                 {name:"Chair", description: "Mesh Back Chair" , date: "03/24/2015" }];
 
 
 $( document ).ready(function() {
     //CUSTOMER INFO
-    $("#customerinfo").html("Customer Name : " + people[randomId].name + 
+    $("#customerinfo").html("<h4> Customer Information </h4>" + 
+							"Customer Name : " + people[randomId].name + 
                             " </br> Customer Address : " + people[randomId].address + 
                             " </br> Phone Number : " + people[randomId].phonenumber +
                             " </br> City : " + people[randomId].city);
     //ITEMS
     $("#items").empty();
+	$("#items").append("<h4> Recent Items Purchased </h4>");
     $.each( purchase, function( index, value ) {
          $("#items").append("Item : " + value.name + 
                             " </br> Description: " + value.description + 
-                            " </br> Purchased on : " + value.date + " </br> ");  
+                            " </br> Purchased on : " + value.date + " </br> </br> ");  
     });       
 
     //NEWS
