@@ -13,7 +13,7 @@ body {background-color: #CCC;}
      overflow: auto;
 }
 #weather {
-    height: 17em;
+    height: 19em;
 	overflow: auto;
 }
 #map {

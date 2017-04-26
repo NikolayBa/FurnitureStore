@@ -1,11 +1,32 @@
-var people = [  {name:"John Doe1", address: "Miami 87" , phonenumber: 088861235, city: "Stockholm" },
-                {name:"John Doe2", address: "Miami 87" , phonenumber: 08886123, city: "Gothenburg" },
-                {name:"John Doe3", address: "Miami 87" , phonenumber: 08886123, city: "Uppsala" },
-                {name:"John Doe4", address: "Miami 87" , phonenumber: 08886123, city: "Lund" },
-                {name:"John Doe5", address: "Miami 87" , phonenumber: 08886123, city: "Halmstad" }];
+var people = [  {name:"John Doe1", address: "Miami 87" , phonenumber: 088861235, city: "Stockholm" , lat: 59.326, lng: 18.070 },
+                {name:"John Doe2", address: "Miami 87" , phonenumber: 08886123, city: "Gothenburg",  lat: 20, lng: 10 },
+                {name:"John Doe3", address: "Miami 87" , phonenumber: 08886123, city: "Uppsala",  lat: 20, lng: 10 },
+                {name:"John Doe4", address: "Miami 87" , phonenumber: 08886123, city: "Lund",  lat: 20, lng: 10 },
+                {name:"John Doe5", address: "Miami 87" , phonenumber: 08886123, city: "Halmstad",  lat: 20, lng: 10 }];
 
 var randomId = Math.floor(Math.random() * 5);
 var cityStr  = people[randomId].city;
+
+iconTable = {
+			"01d" : "wi-day-sunny",
+			"02d" : "wi-day-cloudy",
+			"03d" : "wi-cloudy",
+			"04d" : "wi-cloudy-windy",
+			"09d" : "wi-showers",
+			"10d" : "wi-rain",
+			"11d": "wi-thunderstorm",
+			"13d": "wi-snow",
+			"50d": "wi-fog",
+			"01n": "wi-night-clear",
+			"02n": "wi-night-cloudy",
+			"03n": "wi-night-cloudy",
+			"04n": "wi-night-cloudy",
+			"09n": "wi-night-showers",
+			"10n": "wi-night-rain",
+			"11n": "wi-night-thunderstorm",
+			"13n": "wi-night-snow",
+			"50n": "wi-night-alt-cloudy-windy"
+};
 
 var purchase = [ {name:"Sofa", description: "Warm and Soft Sofa" , date: "03/23/2015" },
                  {name:"Wardrobe", description: "Warm and Soft Sofa" , date: "03/23/2015" },
@@ -18,28 +39,35 @@ $( document ).ready(function() {
     //CUSTOMER INFO
     $("#customerinfo").html("Customer Name : " + people[randomId].name + 
                             " </br> Customer Address : " + people[randomId].address + 
-                            " </br> Phone Number : " + people[randomId].phonenumber);
+                            " </br> Phone Number : " + people[randomId].phonenumber +
+                            " </br> City : " + people[randomId].city);
     //ITEMS
     $("#items").empty();
     $.each( purchase, function( index, value ) {
          $("#items").append("item name : " + value.name + 
                             " </br> Description: " + value.description + 
-                            "  </br>  Purchased on : " + value.date + " </br> ");  
+                            " </br>  Purchased on : " + value.date + " </br> ");  
     });       
 
     //NEWS
     getNyTimesNewsData();
-    
 
+    //MAP
+    //setupMap();
+    
     //WEATHER 
     var weatherUrl="http://api.openweathermap.org/data/2.5/forecast";
     var weatherApiKey="a73fba391f014de23586c2a9ae96f692";
-          
+
     getWeatherData(weatherUrl, cityStr,weatherApiKey);
 
 });
 
 function getNyTimesNewsData(){
+    $("#news").empty();
+
+    var title ="<h4> Recent news for "+ cityStr + " </h4>";
+    $("#news").append(title);
 
     var nyTimesUrl = "https://api.nytimes.com/svc/search/v2/articlesearch.json";
     nyTimesUrl += '?' + $.param({
@@ -67,6 +95,40 @@ function getNyTimesNewsData(){
     });
 }
 
+function setupMap(){
+    var locations = [
+      ['Blagoevgrad 21.03.2017 - 24.03.2017', 42.016380, 23.109741, 4],
+      ['Sofia 26.03.2017 ', 42.686339, 23.321228, 5],
+      ['Varna 28.03.2017', 43.209046, 27.913513, 3],
+      ['Ruse 30.03.2017', 43.842319, 25.968933, 2],
+      ['Plovediv 01.04.2017', 42.138697, 24.746704, 1]
+    ];
+
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 7,
+      center: new google.maps.LatLng(people[0].lat, people[0].lng),
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+
+    var infowindow = new google.maps.InfoWindow();
+
+    var marker, i;
+
+    for (i = 0; i < locations.length; i++) {
+      marker = new google.maps.Marker({
+        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+        map: map
+      });
+
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+          infowindow.setContent(locations[i][0]);
+          infowindow.open(map, marker);
+        }
+      })(marker, i));
+    }
+}
+
 function getWeatherData(url,cityStr,weatherApiKey){
 	var request=$.ajax({
 		url:url,
@@ -80,11 +142,15 @@ function getWeatherData(url,cityStr,weatherApiKey){
 }
 
 function fetchWeatherData(forecast){
-	console.log(forecast);
-	var html="";
-	html+="<h3> Weather Forecast for "+ cityStr + " </h3>";
+    $("#weather").empty();
+	console.log(JSON.stringify(forecast));
+	var title ="<h4> Weather Forecast for "+ cityStr + " </h4>";
+    $("#weather").append(title);
 	forecast.list.forEach(function(forecastEntry,index,list){
-		html+="<p>" + forecastEntry.dt_txt + " : " + forecastEntry.main.temp + "</p>"
+		var text = "<p>" + forecastEntry.dt_txt + " : " + forecastEntry.main.temp + "</p>";
+        var icon = $("<i></i>");
+        icon.addClass("wi weathericon " + iconTable[forecastEntry.weather[0].icon]);
+        $("#weather").append(text);  
+        $("#weather").append(icon);   
 	})
-	$("#weather").html(html); 
 }
